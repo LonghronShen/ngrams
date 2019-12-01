@@ -4,7 +4,7 @@ information at http://users.cs.dal.ca/~vlado/srcperl/Ngrams/Ngrams.html
 
 1. download and save the source code.
 
-2. $ make
+2. $ mkdir -p build && cd build && cmake .. && cmake --build . && cd bin
 
 3. $ ngrams --type=word --n=3 --in= sample.txt
 
