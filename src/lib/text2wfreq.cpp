@@ -22,13 +22,46 @@ Email me at jerryy@gmail.com if you have any question or comment
 WebSite: http://www.cs.dal.ca/~zyu
 
 *************************************************************************/
+#include <ctime>
+#include <iostream>
 
-#include "INgrams.h"
+#include <ngram/config.h>
+#include <ngram/text2wfreq.h>
 
-INgrams::INgrams()
-{
-}
 
-INgrams::~INgrams()
-{
+using namespace std;
+
+bool Text2wfreq::getOptions(int argc, char *argv[]) {
+  if (argc < 2) {
+    return false;
+  }
+
+  if (Config::hasOption("--help", argc, argv) ||
+      Config::hasOption("-help", argc, argv)) {
+    return false;
+  }
+
+  utf8_string value = Config::getOptionValue("-type", argc, argv);
+
+  if (value == "character") {
+    ngramType = Config::CHAR_NGRAM;
+  } else if (value == "word") {
+    ngramType = Config::WORD_NGRAM;
+  } else if (value == "byte") {
+    ngramType = Config::BYTE_NGRAM;
+  } else if (value != "") {
+    printf("wrong type option!\n");
+    return false;
+  }
+
+  value = Config::getOptionValue("-n", argc, argv);
+
+  if (value != "") {
+    sscanf(value.c_str(), "%d", &ngramN);
+  }
+
+  inFileName = Config::getOptionValue("-in", argc, argv).c_str();
+  outFileName = Config::getOptionValue("-out", argc, argv).c_str();
+
+  return true;
 }
